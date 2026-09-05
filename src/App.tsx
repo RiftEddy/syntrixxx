@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Services } from './components/Services';
-import { Portfolio } from './components/Portfolio';
 import { About } from './components/About';
 import { ScopePlanner } from './components/ScopePlanner';
 import { Testimonials } from './components/Testimonials';
@@ -15,9 +14,7 @@ export default function App() {
   const [scopeSummary, setScopeSummary] = useState<{
     serviceType: string;
     timeline: string;
-    budgetRange: string;
     selectedFeatures: string[];
-    estimatedTotal: string;
   } | null>(null);
 
   // Smooth scroll handler
@@ -38,9 +35,7 @@ export default function App() {
   const handleApplyScopeToContact = (scope: {
     serviceType: string;
     timeline: string;
-    budgetRange: string;
     selectedFeatures: string[];
-    estimatedTotal: string;
   }) => {
     setScopeSummary(scope);
     handleNavigate('contact');
@@ -48,7 +43,7 @@ export default function App() {
 
   // Track active section on scroll
   useEffect(() => {
-    const sectionIds = ['hero', 'services', 'portfolio', 'about', 'planner', 'contact'];
+    const sectionIds = ['hero', 'services', 'about', 'planner', 'contact'];
     const handleScroll = () => {
       const scrollY = window.scrollY + 250;
       for (const id of sectionIds) {
@@ -78,14 +73,11 @@ export default function App() {
         {/* Hero Section */}
         <Hero
           onStartProject={() => handleNavigate('contact')}
-          onExploreWork={() => handleNavigate('portfolio')}
+          onExploreWork={() => handleNavigate('services')}
         />
 
         {/* Services Section */}
         <Services onSelectService={handleSelectService} />
-
-        {/* Portfolio / Selected Works Section */}
-        <Portfolio />
 
         {/* About Agency & Niale Kaeti Section */}
         <About />

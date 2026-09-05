@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Calculator, Check, ArrowRight, Sparkles, HelpCircle } from 'lucide-react';
+import { Layers, Check, ArrowRight, Sparkles } from 'lucide-react';
 
 interface ScopePlannerProps {
   onApplyScopeToContact: (scopeSummary: {
     serviceType: string;
     timeline: string;
-    budgetRange: string;
     selectedFeatures: string[];
-    estimatedTotal: string;
   }) => void;
 }
 
@@ -23,42 +21,38 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
     {
       id: 'flagship',
       name: 'Flagship Web Presence',
-      base: 7500,
-      description: 'Bespoke corporate, portfolio, or brand sanctuary with haute typography.'
+      description: 'Bespoke corporate or brand sanctuary with haute typography and editorial layouts.'
     },
     {
       id: 'ecommerce',
       name: 'Luxury E-Commerce',
-      base: 11500,
-      description: 'High-ticket shopping experience, custom checkout flows, catalog architecture.'
+      description: 'High-ticket shopping experience, custom checkout flows, and catalog architecture.'
     },
     {
       id: 'saas',
       name: 'SaaS / Tech Application',
-      base: 13500,
-      description: 'Complex dashboard, developer documentation, authentication, interactive charts.'
+      description: 'Complex dashboard, developer documentation, authentication, and interactive systems.'
     },
     {
       id: 'rebrand',
       name: 'Complete Brand & Digital Overhaul',
-      base: 16000,
-      description: 'Visual identity system, logo design, 3D assets, and flagship web engineering.'
+      description: 'Visual identity system, logo suite, design tokens, and flagship web engineering.'
     }
   ];
 
   const timelineOptions = [
-    { id: 'rush', name: 'Rapid Sprint (3–4 Weeks)', multiplier: 1.25 },
-    { id: 'standard', name: 'Standard Sprint (5–7 Weeks)', multiplier: 1.0 },
-    { id: 'extended', name: 'Comprehensive Architecture (8–12 Weeks)', multiplier: 1.15 }
+    { id: 'rush', name: 'Rapid Sprint (3–4 Weeks)', description: 'Expedited dual-lead sprint' },
+    { id: 'standard', name: 'Standard Sprint (5–7 Weeks)', description: 'Balanced craft & review cycles' },
+    { id: 'extended', name: 'Comprehensive Architecture (8–12 Weeks)', description: 'Deep iterative engineering' }
   ];
 
   const availableAddons = [
-    { name: 'Custom Motion & Micro-Interactions', price: 2000 },
-    { name: 'Interactive 3D / WebGL Visualizer', price: 3500 },
-    { name: 'Headless CMS (Sanity / Strapi / Custom)', price: 2500 },
-    { name: 'Enterprise Design System Tokens', price: 3000 },
-    { name: 'Sub-Second Performance Guarantee', price: 1500 },
-    { name: 'Comprehensive SEO & Structured Data Suite', price: 1800 }
+    { name: 'Custom Motion & Micro-Interactions', tag: 'Motion Design' },
+    { name: 'Interactive 3D / WebGL Visualizer', tag: 'Interactive 3D' },
+    { name: 'Headless CMS (Sanity / Strapi / Custom)', tag: 'Content Engine' },
+    { name: 'Enterprise Design System Tokens', tag: 'Design System' },
+    { name: 'Sub-Second Performance Guarantee', tag: 'Edge Speed' },
+    { name: 'Comprehensive SEO & Structured Data Suite', tag: 'SEO & Meta' }
   ];
 
   const toggleAddon = (name: string) => {
@@ -69,19 +63,6 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
     }
   };
 
-  // Calculate dynamic estimation
-  const currentBase = projectTypes.find((p) => p.id === projectType)?.base || 7500;
-  const currentMultiplier = timelineOptions.find((t) => t.id === timeline)?.multiplier || 1.0;
-  const addonsTotal = selectedAddons.reduce((sum, item) => {
-    const found = availableAddons.find((a) => a.name === item);
-    return sum + (found ? found.price : 0);
-  }, 0);
-
-  const rawEstimate = Math.round((currentBase + addonsTotal) * currentMultiplier);
-  const lowBracket = Math.round((rawEstimate * 0.9) / 500) * 500;
-  const highBracket = Math.round((rawEstimate * 1.15) / 500) * 500;
-  const budgetBracketString = `$${lowBracket.toLocaleString()} – $${highBracket.toLocaleString()} USD`;
-
   const handleTransferToBrief = () => {
     const currentProjectName = projectTypes.find((p) => p.id === projectType)?.name || 'Flagship Web Presence';
     const currentTimelineName = timelineOptions.find((t) => t.id === timeline)?.name || 'Standard Sprint (5–7 Weeks)';
@@ -89,9 +70,7 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
     onApplyScopeToContact({
       serviceType: currentProjectName,
       timeline: currentTimelineName,
-      budgetRange: budgetBracketString,
-      selectedFeatures: selectedAddons,
-      estimatedTotal: budgetBracketString
+      selectedFeatures: selectedAddons
     });
   };
 
@@ -105,11 +84,11 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
             <span className="text-xs uppercase tracking-[0.4em] font-bold text-white">Interactive Scope Planner</span>
           </div>
           <h2 className="text-4xl sm:text-6xl font-black italic tracking-tighter text-white mb-4">
-            PLAN YOUR INVESTMENT. <br />
-            <span className="text-[#FFD700]">CLEAR & TRANSPARENT.</span>
+            PLAN YOUR SCOPE. <br />
+            <span className="text-[#FFD700]">TAILORED & TRANSPARENT.</span>
           </h2>
           <p className="text-white/60 text-base leading-relaxed">
-            Configure your project parameters to estimate sprint timeline and approximate capital requirement. You can send this configured scope directly to Niale Kaeti.
+            Configure your project parameters to define architecture, delivery cadence, and core feature modules. Transfer your tailored scope directly into the project brief.
           </p>
         </div>
 
@@ -165,7 +144,7 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
                   >
                     <div className="text-xs font-bold uppercase tracking-tight text-white mb-1">{opt.name}</div>
                     <div className="text-[10px] text-white/40">
-                      {opt.id === 'rush' ? 'Dedicated dual-lead sprint' : 'Balanced craft & review cycles'}
+                      {opt.description}
                     </div>
                   </button>
                 ))}
@@ -175,7 +154,7 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
             {/* Step 3: High-Impact Modules & Addons */}
             <div className="p-6 bg-white/5 border border-white/10">
               <label className="text-xs uppercase tracking-widest font-bold text-white/50 block mb-4">
-                3. High-Impact Enhancements & Add-ons
+                3. High-Impact Enhancements & Modules
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {availableAddons.map((addon) => {
@@ -202,8 +181,8 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
                         </div>
                         <span className="text-xs font-medium text-white/90">{addon.name}</span>
                       </div>
-                      <span className="text-[11px] font-mono text-white/50">
-                        +${addon.price.toLocaleString()}
+                      <span className="text-[10px] font-mono text-white/40 uppercase tracking-wider">
+                        {addon.tag}
                       </span>
                     </div>
                   );
@@ -212,14 +191,14 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
             </div>
           </div>
 
-          {/* Right Column: Estimated Investment Summary Card */}
+          {/* Right Column: Scope Summary Card */}
           <div className="lg:col-span-4 sticky top-28 p-6 sm:p-8 bg-white/5 border border-white/20 shadow-2xl">
             <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
               <span className="text-xs uppercase tracking-widest font-bold text-white/50">
                 Scope Summary
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 bg-[#FFD700] text-black font-bold uppercase">
-                ESTIMATE
+              <span className="text-[10px] font-mono px-2 py-0.5 bg-[#FFD700] text-black font-bold uppercase tracking-wider">
+                SPECIFICATION
               </span>
             </div>
 
@@ -253,16 +232,16 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
               </div>
             </div>
 
-            {/* Estimated Total Bracket */}
+            {/* Custom Allocation Notice */}
             <div className="p-4 bg-black border border-white/10 mb-6">
               <span className="text-[10px] uppercase tracking-widest text-white/40 block mb-1">
-                Estimated Capital Allocation
+                Project Capital Allocation
               </span>
-              <div className="text-2xl sm:text-3xl font-black italic tracking-tight text-[#FFD700] font-mono">
-                {budgetBracketString}
+              <div className="text-lg sm:text-xl font-black italic tracking-tight text-[#FFD700]">
+                Client-Specified
               </div>
-              <span className="text-[10px] text-white/40 block mt-1">
-                Includes all design tokens, responsive code, and production deployment.
+              <span className="text-[10px] text-white/40 block mt-1 leading-relaxed">
+                We do not use automatic price estimators. Define your custom allocation amount (min. $25 USD) directly in the brief form.
               </span>
             </div>
 
@@ -276,7 +255,7 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
             </button>
 
             <p className="text-[11px] text-white/40 text-center mt-3 uppercase tracking-wider">
-              No immediate commitment required. Pre-populates the project brief below.
+              No commitment required. Pre-fills your project specifications below.
             </p>
           </div>
         </div>

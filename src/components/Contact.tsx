@@ -18,9 +18,7 @@ interface ContactProps {
   scopeSummary?: {
     serviceType: string;
     timeline: string;
-    budgetRange: string;
     selectedFeatures: string[];
-    estimatedTotal: string;
   } | null;
 }
 
@@ -30,13 +28,14 @@ export const Contact: React.FC<ContactProps> = ({ initialService = '', scopeSumm
     email: '',
     company: '',
     service: initialService || 'Bespoke Web Design',
-    budget: '$10,000 – $25,000 USD',
+    budget: '',
     timeline: 'Within 4–8 Weeks',
     message: ''
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [budgetError, setBudgetError] = useState('');
 
   // Update if parent passes prefilled data
   React.useEffect(() => {
@@ -44,9 +43,8 @@ export const Contact: React.FC<ContactProps> = ({ initialService = '', scopeSumm
       setFormData((prev) => ({
         ...prev,
         service: scopeSummary.serviceType,
-        budget: scopeSummary.budgetRange,
         timeline: scopeSummary.timeline,
-        message: prev.message || `Hi Niale, I've configured our project scope using the Syntrix planner:\n- Architecture: ${scopeSummary.serviceType}\n- Desired Timeline: ${scopeSummary.timeline}\n- Estimated Capital: ${scopeSummary.budgetRange}\n- Key Features: ${scopeSummary.selectedFeatures.join(', ')}\n\nLooking forward to discussing our launch.`
+        message: prev.message || `Hi Niale, I've configured our project scope using the Syntrix planner:\n- Architecture: ${scopeSummary.serviceType}\n- Desired Cadence: ${scopeSummary.timeline}\n- Key Features: ${scopeSummary.selectedFeatures.join(', ')}\n\nLooking forward to discussing our launch.`
       }));
     } else if (initialService) {
       setFormData((prev) => ({
@@ -63,6 +61,8 @@ export const Contact: React.FC<ContactProps> = ({ initialService = '', scopeSumm
   };
 
   const generateMailtoUrl = () => {
+    const numericBudget = parseFloat(formData.budget);
+    const formattedBudget = !isNaN(numericBudget) ? `$${numericBudget.toLocaleString()} USD` : `$${formData.budget} USD`;
     const subject = `[Syntrix Discovery Brief] ${formData.service} - ${formData.company || formData.fullName}`;
     const body = `Hello Niale & Syntrix Studio,
 
@@ -74,7 +74,7 @@ CLIENT & PROJECT SPECIFICATIONS:
 • Email: ${formData.email}
 • Company / Brand: ${formData.company || 'N/A'}
 • Requested Architecture: ${formData.service}
-• Capital Allocation Bracket: ${formData.budget}
+• Allocation Amount: ${formattedBudget}
 • Target Launch Timeline: ${formData.timeline}
 
 PROJECT VISION & OBJECTIVES:
@@ -90,6 +90,14 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName || !formData.email) return;
+
+    const parsedBudget = parseFloat(formData.budget);
+    if (isNaN(parsedBudget) || parsedBudget < 25) {
+      setBudgetError('Allocation amount must be at least $25 USD.');
+      return;
+    }
+
+    setBudgetError('');
     setSubmitted(true);
     // Automatically open default mail client addressed to thef1nanceguy@hotmail.com
     window.location.href = generateMailtoUrl();
@@ -254,7 +262,7 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
                   {scopeSummary && (
                     <div className="p-3.5 bg-[#FFD700]/10 border border-[#FFD700]/30 flex items-center gap-2.5 text-xs text-[#FFD700]">
                       <Sparkles className="w-4 h-4 shrink-0" />
-                      <span>Transferred configured scope from Planner: <strong>{scopeSummary.serviceType}</strong> ({scopeSummary.budgetRange})</span>
+                      <span>Transferred configured scope from Planner: <strong>{scopeSummary.serviceType}</strong> • {scopeSummary.timeline}</span>
                     </div>
                   )}
 
@@ -330,22 +338,64 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {/* Budget Bracket */}
+                    {/* Allocation Amount Text Box (Min $25) */}
                     <div>
-                      <label htmlFor="contact-budget" className="block text-xs uppercase tracking-widest font-bold text-white/70 mb-2">
-                        Capital Allocation Bracket
-                      </label>
-                      <select
-                        id="contact-budget"
-                        value={formData.budget}
-                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                        className="w-full px-4 py-3 bg-black border border-white/10 focus:border-[#FFD700] text-sm text-white outline-none transition-all"
-                      >
-                        <option value="$7,500 – $12,000 USD">$7,500 – $12,000 USD</option>
-                        <option value="$12,000 – $25,000 USD">$12,000 – $25,000 USD</option>
-                        <option value="$25,000 – $50,000 USD">$25,000 – $50,000 USD</option>
-                        <option value="$50,000+ USD (Flagship / Retainer)">$50,000+ USD (Flagship / Retainer)</option>
-                      </select>
+                      <div className="flex items-center justify-between mb-2">
+                        <label htmlFor="contact-budget" className="block text-xs uppercase tracking-widest font-bold text-white/70">
+                          Allocation Amount *
+                        </label>
+                        <span className="text-[10px] font-mono text-[#FFD700] uppercase tracking-wider">
+                          Min. $25 USD
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-mono text-sm pointer-events-none select-none">
+                          $
+                        </span>
+                        <input
+                          id="contact-budget"
+                          type="number"
+                          min={25}
+                          step="any"
+                          required
+                          value={formData.budget}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData({ ...formData, budget: val });
+                            if (budgetError) {
+                              const num = parseFloat(val);
+                              if (!isNaN(num) && num >= 25) {
+                                setBudgetError('');
+                              }
+                            }
+                          }}
+                          onBlur={() => {
+                            if (formData.budget) {
+                              const num = parseFloat(formData.budget);
+                              if (isNaN(num) || num < 25) {
+                                setBudgetError('Allocation amount must be at least $25 USD.');
+                              } else {
+                                setBudgetError('');
+                              }
+                            }
+                          }}
+                          placeholder="e.g. 5000 (Min. $25)"
+                          className={`w-full pl-8 pr-4 py-3 bg-black border text-sm text-white placeholder-white/30 outline-none font-mono transition-all ${
+                            budgetError
+                              ? 'border-red-500 focus:border-red-500 text-red-100'
+                              : 'border-white/10 focus:border-[#FFD700]'
+                          }`}
+                        />
+                      </div>
+                      {budgetError ? (
+                        <p className="text-[11px] text-red-400 mt-1.5 font-mono">
+                          {budgetError}
+                        </p>
+                      ) : (
+                        <span className="text-[10px] text-white/40 mt-1 block font-mono">
+                          USD • Minimum allocation $25
+                        </span>
+                      )}
                     </div>
 
                     {/* Timeline */}

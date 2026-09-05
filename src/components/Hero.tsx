@@ -96,11 +96,11 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork }) => 
                 </button>
 
                 <button
-                  id="hero-cta-portfolio"
+                  id="hero-cta-services"
                   onClick={onExploreWork}
                   className="inline-flex items-center justify-center gap-3 px-7 py-4 font-bold uppercase tracking-widest text-xs bg-white/5 text-white border border-white/10 hover:border-[#FFD700] hover:text-[#FFD700] transition-all duration-200 cursor-pointer"
                 >
-                  <span>Explore Portfolio</span>
+                  <span>Explore Services</span>
                   <Layers className="w-4 h-4" />
                 </button>
 
