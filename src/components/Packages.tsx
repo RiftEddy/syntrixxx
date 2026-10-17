@@ -138,7 +138,7 @@ export const Packages: React.FC<PackagesProps> = ({ onSelectPackageForBrief }) =
         <div className="max-w-4xl mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 mb-6">
             <Zap className="w-3.5 h-3.5 text-[#FFD700]" />
-            <span className="text-xs uppercase tracking-[0.3em] font-bold text-white">
+            <span className="text-xs uppercase tracking-wider font-bold text-white">
               Instant Acquisition • Flexible Billing Cycles
             </span>
           </div>

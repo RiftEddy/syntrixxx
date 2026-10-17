@@ -67,7 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
 
           {/* Desktop Navigation Links */}
           <nav
-            className="hidden lg:flex items-center space-x-8 xl:space-x-10 text-xs uppercase tracking-[0.2em] font-medium"
+            className="hidden lg:flex items-center space-x-7 xl:space-x-9 text-xs uppercase tracking-wide font-medium"
             aria-label="Main Navigation"
           >
             {navItems.map((item) => {
@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               <button
                 id="header-buy-button"
                 onClick={() => handleLinkClick('packages')}
-                className="hidden md:inline-flex items-center justify-center px-3 py-1.5 text-xs uppercase tracking-widest font-semibold text-white/70 hover:text-[#FFD700] hover:bg-white/5 transition-all duration-200 cursor-pointer"
+                className="hidden md:inline-flex items-center justify-center px-3 py-1.5 text-xs uppercase tracking-wide font-semibold text-white/70 hover:text-[#FFD700] hover:bg-white/5 transition-all duration-200 cursor-pointer"
               >
                 <span>Packages</span>
               </button>
@@ -136,7 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               <button
                 id="header-cta-button"
                 onClick={() => handleLinkClick('contact')}
-                className="group relative inline-flex items-center justify-center px-3.5 sm:px-4 py-2 text-xs uppercase tracking-widest font-bold text-black bg-[#FFD700] hover:bg-white transition-all duration-200 shadow-[0_0_15px_rgba(255,215,0,0.2)] cursor-pointer"
+                className="group relative inline-flex items-center justify-center px-3.5 sm:px-4 py-2 text-xs uppercase tracking-wide font-bold text-black bg-[#FFD700] hover:bg-white transition-all duration-200 shadow-[0_0_15px_rgba(255,215,0,0.2)] cursor-pointer"
               >
                 <span>Initiate</span>
                 <ArrowUpRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -177,7 +177,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
                   <button
                     key={item.id}
                     onClick={() => handleLinkClick(item.id)}
-                    className={`text-left text-sm uppercase tracking-widest font-bold py-3 flex items-center justify-between transition-colors ${
+                    className={`text-left text-sm uppercase tracking-wide font-bold py-3 flex items-center justify-between transition-colors ${
                       isActive ? 'text-[#FFD700]' : 'text-white/80 hover:text-white'
                     }`}
                   >
@@ -193,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
 
             {/* Instagram Touchpoints */}
             <div className="pt-3 border-t border-white/10">
-              <div className="text-[10px] uppercase tracking-widest text-white/40 font-mono mb-3">
+              <div className="text-[10px] uppercase tracking-wider text-white/40 font-mono mb-3">
                 Atelier Instagram Channels
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -239,13 +239,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
             <div className="grid grid-cols-2 gap-3 pt-2">
               <button
                 onClick={() => handleLinkClick('packages')}
-                className="py-3 px-4 text-center text-xs uppercase tracking-widest font-bold text-white bg-white/5 border border-white/15 hover:border-[#FFD700] hover:text-[#FFD700] transition-colors"
+                className="py-3 px-4 text-center text-xs uppercase tracking-wide font-bold text-white bg-white/5 border border-white/15 hover:border-[#FFD700] hover:text-[#FFD700] transition-colors"
               >
                 Packages
               </button>
               <button
                 onClick={() => handleLinkClick('contact')}
-                className="py-3 px-4 text-center text-xs uppercase tracking-widest font-bold text-black bg-[#FFD700] hover:bg-white transition-colors"
+                className="py-3 px-4 text-center text-xs uppercase tracking-wide font-bold text-black bg-[#FFD700] hover:bg-white transition-colors"
               >
                 Initiate
               </button>

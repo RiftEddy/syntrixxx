@@ -147,7 +147,7 @@ Transmitted via Syntrix Scope Planner directly to ${AGENCY_EMAIL}`;
         <div className="max-w-3xl mb-14">
           <div className="flex items-center space-x-4 mb-4">
             <div className="w-12 h-[1px] bg-[#FFD700]" />
-            <span className="text-xs uppercase tracking-[0.4em] font-bold text-white">Interactive Scope Planner</span>
+            <span className="text-xs uppercase tracking-wider font-bold text-white">Interactive Scope Planner</span>
           </div>
           <h2 className="text-4xl sm:text-6xl font-black italic tracking-tighter text-white mb-4">
             PLAN YOUR SCOPE. <br />

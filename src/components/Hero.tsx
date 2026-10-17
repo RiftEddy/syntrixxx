@@ -147,7 +147,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork, onVie
             <div className="pt-6 border-t border-white/10">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-[1px] bg-[#FFD700]" />
-                <span className="text-xs uppercase tracking-[0.4em] font-bold text-white">The Agency Story</span>
+                <span className="text-xs uppercase tracking-wider font-bold text-white">The Agency Story</span>
               </div>
               <p className="mt-3 text-xs sm:text-sm text-white/40 max-w-md leading-relaxed">
                 Founded by nialekaeti, Syntrix was born from the need for digital experiences that command attention without begging for it.
@@ -281,7 +281,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork, onVie
                 <span className="text-3xl sm:text-4xl lg:text-5xl font-black italic tracking-tighter text-[#FFD700]">
                   {stat.value}
                 </span>
-                <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.25em] mt-2">
+                <span className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-wider mt-2">
                   {stat.label}
                 </span>
               </div>
