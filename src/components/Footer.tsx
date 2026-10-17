@@ -1,13 +1,14 @@
 import React from 'react';
 import { Logo } from './Logo';
 import { SOCIAL_LINKS, AGENCY_EMAIL } from '../data';
-import { Instagram, ArrowUp, Mail, Shield, Sparkles } from 'lucide-react';
+import { Instagram, ArrowUp, Mail, Shield, Sparkles, Lock } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
+  onOpenAdmin?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -52,7 +53,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </div>
                 </a>
 
-                {/* Company: @syntrixdev (label as "Syntrix") */}
+                {/* Company: @syntrixinc (label as "Syntrix") */}
                 <a
                   id="footer-social-company"
                   href={SOCIAL_LINKS.company.url}
@@ -89,6 +90,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-[#FFD700] transition-colors cursor-pointer"
                 >
                   Services & Expertise
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('packages')}
+                  className="hover:text-[#FFD700] transition-colors cursor-pointer font-bold text-[#FFD700]/90"
+                >
+                  Packages & Buy Now (KSH/USD)
                 </button>
               </li>
               <li>
@@ -179,7 +188,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
           <div className="flex items-center gap-2">
             <span>© {new Date().getFullYear()}</span>
-            <strong className="text-white">syntrix by nialekaeti</strong>
+            <strong
+              onClick={onOpenAdmin}
+              className="text-white hover:text-[#FFD700] transition-colors cursor-pointer"
+              title="Atelier Internal Portal (Double Click or Ctrl+Shift+A)"
+            >
+              syntrix by nialekaeti
+            </strong>
             <span>All Rights Reserved.</span>
           </div>
 
@@ -192,6 +207,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <Sparkles className="w-3.5 h-3.5 text-[#FF0000]" />
               <span>No Generic Templates</span>
             </span>
+            {onOpenAdmin && (
+              <button
+                type="button"
+                id="footer-secret-admin-trigger"
+                onClick={onOpenAdmin}
+                className="flex items-center gap-1 text-white/20 hover:text-[#FFD700] transition-colors font-mono text-[10px] cursor-pointer"
+                title="Atelier Restricted Access (Ctrl+Shift+A)"
+              >
+                <Lock className="w-3 h-3" />
+                <span className="hidden sm:inline">Restricted</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

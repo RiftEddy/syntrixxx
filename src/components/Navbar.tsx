@@ -22,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
 
   const navItems = [
     { label: 'Services', id: 'services' },
+    { label: 'Packages & Buy Now', id: 'packages' },
     { label: 'About', id: 'about' },
     { label: 'Scope Planner', id: 'planner' },
     { label: 'Contact', id: 'contact' }
@@ -105,15 +106,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               </a>
             </div>
 
-            {/* Primary Action Button */}
-            <button
-              id="header-cta-button"
-              onClick={() => handleLinkClick('contact')}
-              className="relative inline-flex items-center justify-center px-4 py-2 text-xs uppercase tracking-widest font-bold text-black bg-[#FFD700] hover:bg-white transition-all duration-200 cursor-pointer"
-            >
-              <span>Initiate</span>
-              <ArrowUpRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </button>
+            {/* Header Action Buttons (Buy Now & Initiate) */}
+            <div className="flex items-center gap-2">
+              <button
+                id="header-buy-button"
+                onClick={() => handleLinkClick('packages')}
+                className="inline-flex items-center justify-center px-3.5 py-2 text-xs uppercase tracking-widest font-bold text-[#FFD700] hover:text-black hover:bg-[#FFD700] border border-[#FFD700] transition-all duration-200 cursor-pointer"
+              >
+                <span>Buy Now</span>
+              </button>
+
+              <button
+                id="header-cta-button"
+                onClick={() => handleLinkClick('contact')}
+                className="relative inline-flex items-center justify-center px-4 py-2 text-xs uppercase tracking-widest font-bold text-black bg-white hover:bg-[#FFD700] transition-all duration-200 cursor-pointer"
+              >
+                <span>Initiate</span>
+                <ArrowUpRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+            </div>
           </div>
 
           {/* Mobile Menu Toggle Button */}
@@ -184,13 +195,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               </div>
             </div>
 
-            {/* Mobile CTA */}
-            <button
-              onClick={() => handleLinkClick('contact')}
-              className="mt-3 w-full py-3 text-center text-sm uppercase tracking-wider font-bold text-black bg-[#FFD700] rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.35)]"
-            >
-              Start a Project
-            </button>
+            {/* Mobile CTAs */}
+            <div className="grid grid-cols-2 gap-2 mt-3">
+              <button
+                onClick={() => handleLinkClick('packages')}
+                className="py-3 text-center text-xs uppercase tracking-wider font-black text-black bg-[#FFD700]"
+              >
+                Buy Now (KSH/USD)
+              </button>
+              <button
+                onClick={() => handleLinkClick('contact')}
+                className="py-3 text-center text-xs uppercase tracking-wider font-bold text-white bg-white/10 border border-white/20"
+              >
+                Initiate Project
+              </button>
+            </div>
           </div>
         </div>
       )}

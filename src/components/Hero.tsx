@@ -6,9 +6,10 @@ import { ArrowRight, Sparkles, Instagram, ShieldCheck, Zap, Code2, Layers } from
 interface HeroProps {
   onStartProject: () => void;
   onExploreWork: () => void;
+  onViewPackages?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork }) => {
+export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork, onViewPackages }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -87,20 +88,29 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork }) => 
               {/* Action Buttons & Socials */}
               <div className="flex flex-wrap items-center gap-4 mb-10">
                 <button
+                  id="hero-cta-packages"
+                  onClick={onViewPackages || onExploreWork}
+                  className="inline-flex items-center justify-center gap-3 px-8 py-4 font-black uppercase tracking-widest text-xs bg-[#FFD700] text-black hover:bg-white transition-all duration-200 cursor-pointer group shadow-[0_0_25px_rgba(255,215,0,0.3)]"
+                >
+                  <span>Buy Now (Packages)</span>
+                  <Zap className="w-4 h-4 fill-black" />
+                </button>
+
+                <button
                   id="hero-cta-start"
                   onClick={onStartProject}
-                  className="inline-flex items-center justify-center gap-3 px-8 py-4 font-bold uppercase tracking-widest text-xs bg-[#FFD700] text-black hover:bg-white transition-all duration-200 cursor-pointer group"
+                  className="inline-flex items-center justify-center gap-3 px-7 py-4 font-bold uppercase tracking-widest text-xs bg-white/10 text-white border border-white/20 hover:border-[#FFD700] hover:text-[#FFD700] transition-all duration-200 cursor-pointer group"
                 >
-                  <span>Initiate Project</span>
+                  <span>Initiate Brief</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
 
                 <button
                   id="hero-cta-services"
                   onClick={onExploreWork}
-                  className="inline-flex items-center justify-center gap-3 px-7 py-4 font-bold uppercase tracking-widest text-xs bg-white/5 text-white border border-white/10 hover:border-[#FFD700] hover:text-[#FFD700] transition-all duration-200 cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-4 font-bold uppercase tracking-widest text-xs text-white/60 hover:text-white transition-all duration-200 cursor-pointer"
                 >
-                  <span>Explore Services</span>
+                  <span>Services</span>
                   <Layers className="w-4 h-4" />
                 </button>
 
@@ -260,12 +270,12 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork }) => 
       {/* Hero Bottom Metric Strip */}
       <div className="relative z-10 w-full border-t border-white/10 bg-black mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-white/10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
             {AGENCY_STATS.map((stat, idx) => (
               <div
                 key={stat.label}
                 className={`flex flex-col items-center text-center ${
-                  idx > 0 ? 'pt-4 md:pt-0' : ''
+                  idx > 0 ? 'pt-4 sm:pt-0' : ''
                 }`}
               >
                 <span className="text-3xl sm:text-4xl lg:text-5xl font-black italic tracking-tighter text-[#FFD700]">

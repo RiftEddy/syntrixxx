@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SOCIAL_LINKS, AGENCY_EMAIL } from '../data';
 import { ContactFormData } from '../types';
 import { 
@@ -10,7 +10,10 @@ import {
   Calendar, 
   Instagram, 
   ArrowUpRight,
-  Sparkles
+  Sparkles,
+  MessageSquare,
+  RefreshCw,
+  FileText
 } from 'lucide-react';
 
 interface ContactProps {
@@ -22,34 +25,58 @@ interface ContactProps {
   } | null;
 }
 
+const DEFAULT_INITIATE_MESSAGE = `Hi Niale, I would like to initiate discovery for a new digital project with Syntrix. We want to craft an uncompromising, high-velocity digital presence and explore architecture and launch timeline options. Looking forward to connecting.`;
+
 export const Contact: React.FC<ContactProps> = ({ initialService = '', scopeSummary = null }) => {
   const [formData, setFormData] = useState<ContactFormData>({
     fullName: '',
     email: '',
     company: '',
-    service: initialService || 'Bespoke Web Design',
-    budget: '',
+    service: initialService || 'Glacier • Website (No Hosting) – 15K KES ($115)',
+    budget: '25',
     timeline: 'Within 4–8 Weeks',
-    message: ''
+    message: DEFAULT_INITIATE_MESSAGE
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [budgetError, setBudgetError] = useState('');
+  const [activeMessagePreset, setActiveMessagePreset] = useState<'default' | 'scope' | 'flagship' | 'commerce' | 'rebrand' | 'custom'>(
+    scopeSummary ? 'scope' : 'default'
+  );
 
-  // Update if parent passes prefilled data
-  React.useEffect(() => {
+  const buildScopeMessage = (scope: { serviceType: string; timeline: string; selectedFeatures: string[] }) => {
+    const modulesList = scope.selectedFeatures.length > 0
+      ? scope.selectedFeatures.map((f) => `  - ${f}`).join('\n')
+      : '  - Standard Core Architecture';
+
+    return `Hi Niale, I've configured our project scope using the Syntrix Scope Planner:
+
+• Architecture Archetype: ${scope.serviceType}
+• Delivery Cadence: ${scope.timeline}
+• Active Feature Modules (${scope.selectedFeatures.length}):
+${modulesList}
+
+We are looking to initiate discovery and discuss next steps for this project.`;
+  };
+
+  // Update when scopeSummary or initialService changes
+  useEffect(() => {
     if (scopeSummary) {
       setFormData((prev) => ({
         ...prev,
         service: scopeSummary.serviceType,
         timeline: scopeSummary.timeline,
-        message: prev.message || `Hi Niale, I've configured our project scope using the Syntrix planner:\n- Architecture: ${scopeSummary.serviceType}\n- Desired Cadence: ${scopeSummary.timeline}\n- Key Features: ${scopeSummary.selectedFeatures.join(', ')}\n\nLooking forward to discussing our launch.`
+        message: buildScopeMessage(scopeSummary)
       }));
+      setActiveMessagePreset('scope');
     } else if (initialService) {
       setFormData((prev) => ({
         ...prev,
-        service: initialService
+        service: initialService,
+        message: prev.message === DEFAULT_INITIATE_MESSAGE
+          ? `Hi Niale, I would like to initiate discovery regarding the ${initialService} tier. We're eager to discuss timeline, deliverables, and launch velocity.`
+          : prev.message
       }));
     }
   }, [scopeSummary, initialService]);
@@ -58,6 +85,37 @@ export const Contact: React.FC<ContactProps> = ({ initialService = '', scopeSumm
     navigator.clipboard.writeText(AGENCY_EMAIL);
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2500);
+  };
+
+  const handleSelectPreset = (preset: 'default' | 'scope' | 'flagship' | 'commerce' | 'rebrand') => {
+    setActiveMessagePreset(preset);
+    if (preset === 'default') {
+      setFormData((prev) => ({ ...prev, message: DEFAULT_INITIATE_MESSAGE }));
+    } else if (preset === 'scope') {
+      if (scopeSummary) {
+        setFormData((prev) => ({ ...prev, message: buildScopeMessage(scopeSummary) }));
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          message: `Hi Niale, I'm planning our project scope for ${formData.service}. We require a robust frontend, sub-second performance, and tailored feature integrations. Looking forward to initiating discovery.`
+        }));
+      }
+    } else if (preset === 'flagship') {
+      setFormData((prev) => ({
+        ...prev,
+        message: `Hi Niale, we're planning a flagship digital platform for our brand. We require bespoke motion design, sub-second edge performance, and an uncompromising editorial aesthetic. Let's schedule our discovery session.`
+      }));
+    } else if (preset === 'commerce') {
+      setFormData((prev) => ({
+        ...prev,
+        message: `Hi Niale, we want to launch a high-conversion digital commerce platform integrated with Safaricom M-Pesa instant checkout and frictionless payment flows. Let's discuss architecture and timeline.`
+      }));
+    } else if (preset === 'rebrand') {
+      setFormData((prev) => ({
+        ...prev,
+        message: `Hi Niale, we are preparing a comprehensive brand overhaul and haute digital presence, including custom 3D visualizers, bespoke design tokens, and creative direction. Looking forward to connecting.`
+      }));
+    }
   };
 
   const generateMailtoUrl = () => {
@@ -159,63 +217,43 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
                   Copied {AGENCY_EMAIL} to clipboard!
                 </span>
               )}
+              <span className="text-xs text-white/40 block mt-3 leading-relaxed">
+                Direct inquiries receive founder response within 24 business hours. Standard studio mutual confidentiality protocols apply.
+              </span>
             </div>
 
-            {/* Direct Social Channels */}
-            <div className="p-6 sm:p-8 bg-white/5 border border-white/10">
-              <span className="text-xs uppercase tracking-widest font-bold text-white/50 block mb-4">
-                Follow On Instagram
+            {/* Founder Direct Line */}
+            <div className="p-6 sm:p-8 bg-white/5 border border-white/10 space-y-4">
+              <span className="text-xs uppercase tracking-widest font-bold text-white/50 block">
+                Executive Leadership
               </span>
-              <div className="space-y-3">
-                {/* Company Link */}
-                <a
-                  href={SOCIAL_LINKS.company.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3.5 bg-black border border-white/10 hover:border-[#FFD700] transition-colors group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white/5 border border-white/10 text-[#FFD700]">
-                      <Instagram className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-[10px] uppercase tracking-wider text-white/40">Syntrix Agency</div>
-                      <div className="text-sm font-bold text-white group-hover:text-[#FFD700] transition-colors">
-                        {SOCIAL_LINKS.company.handle}
-                      </div>
-                    </div>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-white/40 group-hover:text-[#FFD700] transition-colors" />
-                </a>
-
-                {/* Founder Link */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-white text-base">Niale Kaeti</h3>
+                  <p className="text-xs text-[#FFD700] font-mono mt-0.5">Founder & Creative Director</p>
+                </div>
                 <a
                   href={SOCIAL_LINKS.founder.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3.5 bg-black border border-white/10 hover:border-[#FF0000] transition-colors group"
+                  className="p-2.5 bg-black hover:bg-white/10 border border-white/10 hover:border-[#FFD700] text-[#FFD700] transition-colors flex items-center gap-1.5 text-xs font-mono"
+                  title="Founder Instagram"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white/5 border border-white/10 text-[#FF0000]">
-                      <Instagram className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-[10px] uppercase tracking-wider text-white/40">Founder & Creative Lead</div>
-                      <div className="text-sm font-bold text-white group-hover:text-red-400 transition-colors">
-                        {SOCIAL_LINKS.founder.handle} ({SOCIAL_LINKS.founder.name})
-                      </div>
-                    </div>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
+                  <Instagram className="w-4 h-4" />
+                  <span className="hidden sm:inline">{SOCIAL_LINKS.founder.handle}</span>
+                  <ArrowUpRight className="w-3 h-3" />
                 </a>
               </div>
+              <p className="text-xs text-white/60 leading-relaxed pt-2 border-t border-white/10">
+                Directly leads creative direction and architecture on every atelier engagement. No intermediate account executives or outsourced handoffs.
+              </p>
             </div>
 
-            {/* Atelier Guarantees */}
-            <div className="p-6 bg-white/5 border border-white/10 space-y-3 text-xs text-white/50">
+            {/* Availability Badges */}
+            <div className="p-4 bg-black border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-white/60">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[#FFD700]" />
-                <span>Typical response time: Under 12 hours</span>
+                <span>Nairobi, KE (EAT / UTC+3)</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-[#FFD700]" />
@@ -224,7 +262,7 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
             </div>
           </div>
 
-          {/* Right Column: Interactive Brief Form */}
+          {/* Right Column: Interactive Brief Form in Initiate Section */}
           <div className="lg:col-span-7">
             <div className="p-8 sm:p-10 bg-white/5 border border-white/10 shadow-2xl relative">
               {submitted ? (
@@ -232,7 +270,7 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
                   <div className="w-16 h-16 bg-white/5 border border-[#FFD700] flex items-center justify-center mx-auto">
                     <CheckCircle className="w-8 h-8 text-[#FFD700]" />
                   </div>
-                  <h3 className="text-2xl sm:text-3xl font-black italic tracking-tight text-white">
+                  <h3 className="text-2xl sm:text-3xl font-black italic tracking-tight text-white uppercase">
                     Brief Directed to {AGENCY_EMAIL}
                   </h3>
                   <p className="text-white/70 text-sm max-w-md mx-auto leading-relaxed">
@@ -260,9 +298,18 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {scopeSummary && (
-                    <div className="p-3.5 bg-[#FFD700]/10 border border-[#FFD700]/30 flex items-center gap-2.5 text-xs text-[#FFD700]">
-                      <Sparkles className="w-4 h-4 shrink-0" />
-                      <span>Transferred configured scope from Planner: <strong>{scopeSummary.serviceType}</strong> • {scopeSummary.timeline}</span>
+                    <div className="p-3.5 bg-[#FFD700]/10 border border-[#FFD700]/30 flex items-center justify-between gap-2.5 text-xs text-[#FFD700]">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 shrink-0" />
+                        <span>Transferred configured scope: <strong>{scopeSummary.serviceType}</strong> • {scopeSummary.timeline}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleSelectPreset('scope')}
+                        className="underline text-[11px] uppercase tracking-wider font-bold hover:text-white cursor-pointer shrink-0"
+                      >
+                        Refresh Scope Message
+                      </button>
                     </div>
                   )}
 
@@ -327,12 +374,19 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                         className="w-full px-4 py-3 bg-black border border-white/10 focus:border-[#FFD700] text-sm text-white outline-none transition-all"
                       >
-                        <option value="Bespoke Web Design">Bespoke Web Design</option>
-                        <option value="UI/UX & Product Strategy">UI/UX & Product Strategy</option>
-                        <option value="Brand Identity & Creative Direction">Brand Identity & Direction</option>
-                        <option value="Full-Stack Digital Engineering">Full-Stack Digital Engineering</option>
-                        <option value="Motion & Interactive WebGL">Motion & Interactive WebGL</option>
-                        <option value="Complete Atelier Package">Complete Atelier Package</option>
+                        <option value="Glacier • Website (No Hosting) – 15K KES ($115)">Glacier • Website (No Hosting) – 15K KES ($115)</option>
+                        <option value="Phantom • Website + 1-Yr Hosting – 25K KES ($192)">Phantom • Website + 1-Yr Hosting – 25K KES ($192)</option>
+                        <option value="Vanguard • Google Identification & Maps – 38K KES ($292)">Vanguard • Google Identification & Maps – 38K KES ($292)</option>
+                        <option value="Apex • Growth Web & Marketing – 65K KES ($500)">Apex • Growth Web & Marketing – 65K KES ($500)</option>
+                        <option value="Spectre • Agile Retainer & Task Sprint – 110.5K KES ($850)">Spectre • Agile Retainer & Task Sprint – 110.5K KES ($850)</option>
+                        <option value="Obsidian • Commerce & M-Pesa Engine – 120K KES ($920)">Obsidian • Commerce & M-Pesa Engine – 120K KES ($920)</option>
+                        <option value="Monolith • Sprint Launch – 325K KES ($2,500)">Monolith • Sprint Launch – 325K KES ($2,500)</option>
+                        <option value="Aether • Flagship Platform – 754K KES ($5,800)">Aether • Flagship Platform – 754K KES ($5,800)</option>
+                        <option value="Hyperion • Haute Architecture & Rebrand – 1.625M KES ($12,500)">Hyperion • Haute Architecture & Rebrand – 1.625M KES ($12,500)</option>
+                        <option value="Flagship Web Presence (Custom)">Flagship Web Presence (Custom)</option>
+                        <option value="Luxury E-Commerce (Custom)">Luxury E-Commerce (Custom)</option>
+                        <option value="SaaS / Tech Application (Custom)">SaaS / Tech Application (Custom)</option>
+                        <option value="Bespoke Custom Engineering">Bespoke Custom Engineering</option>
                       </select>
                     </div>
                   </div>
@@ -417,19 +471,97 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
                     </div>
                   </div>
 
-                  {/* Project Details */}
+                  {/* Project Details with Message Creator Controls */}
                   <div>
-                    <label htmlFor="contact-message" className="block text-xs uppercase tracking-widest font-bold text-white/70 mb-2">
-                      Project Vision & Context
-                    </label>
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <label htmlFor="contact-message" className="text-xs uppercase tracking-widest font-bold text-white/70 flex items-center gap-1.5">
+                        <MessageSquare className="w-3.5 h-3.5 text-[#FFD700]" />
+                        <span>Project Vision & Context (Initiate Message)</span>
+                      </label>
+                      <span className="text-[10px] text-[#FFD700] font-mono uppercase tracking-wider flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        <span>Message Created & Ready</span>
+                      </span>
+                    </div>
+
+                    {/* Quick Message Starter Generators */}
+                    <div className="mb-2.5 flex flex-wrap items-center gap-1.5">
+                      <span className="text-[10px] uppercase text-white/40 tracking-wider font-mono mr-1">
+                        Create Message:
+                      </span>
+                      {scopeSummary && (
+                        <button
+                          type="button"
+                          onClick={() => handleSelectPreset('scope')}
+                          className={`text-[10px] px-2.5 py-1 border transition-all cursor-pointer flex items-center gap-1 ${
+                            activeMessagePreset === 'scope'
+                              ? 'bg-[#FFD700] text-black border-[#FFD700] font-bold'
+                              : 'bg-black text-white/80 border-white/20 hover:border-[#FFD700]'
+                          }`}
+                        >
+                          <FileText className="w-2.5 h-2.5" />
+                          <span>Scope Specs</span>
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleSelectPreset('flagship')}
+                        className={`text-[10px] px-2.5 py-1 border transition-all cursor-pointer ${
+                          activeMessagePreset === 'flagship'
+                            ? 'bg-[#FFD700] text-black border-[#FFD700] font-bold'
+                            : 'bg-black text-white/80 border-white/20 hover:border-[#FFD700]'
+                        }`}
+                      >
+                        🚀 Flagship
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSelectPreset('commerce')}
+                        className={`text-[10px] px-2.5 py-1 border transition-all cursor-pointer ${
+                          activeMessagePreset === 'commerce'
+                            ? 'bg-[#FFD700] text-black border-[#FFD700] font-bold'
+                            : 'bg-black text-white/80 border-white/20 hover:border-[#FFD700]'
+                        }`}
+                      >
+                        🛒 Commerce & M-Pesa
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSelectPreset('rebrand')}
+                        className={`text-[10px] px-2.5 py-1 border transition-all cursor-pointer ${
+                          activeMessagePreset === 'rebrand'
+                            ? 'bg-[#FFD700] text-black border-[#FFD700] font-bold'
+                            : 'bg-black text-white/80 border-white/20 hover:border-[#FFD700]'
+                        }`}
+                      >
+                        💎 Haute Rebrand
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSelectPreset('default')}
+                        className="text-[10px] px-2.5 py-1 bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border border-white/10 transition-all cursor-pointer flex items-center gap-1"
+                        title="Reset to default initiate message"
+                      >
+                        <RefreshCw className="w-2.5 h-2.5" />
+                        <span>Reset</span>
+                      </button>
+                    </div>
+
                     <textarea
                       id="contact-message"
                       rows={4}
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, message: e.target.value });
+                        setActiveMessagePreset('custom');
+                      }}
                       placeholder="Tell us about your brand goals, target audience, aesthetic inspirations, or specific requirements..."
-                      className="w-full px-4 py-3 bg-black border border-white/10 focus:border-[#FFD700] text-sm text-white placeholder-white/30 outline-none transition-all"
+                      className="w-full px-4 py-3 bg-black border border-white/10 focus:border-[#FFD700] text-sm text-white placeholder-white/30 outline-none transition-all leading-relaxed"
                     />
+                    <div className="flex justify-between items-center mt-1 text-[10px] text-white/40 font-mono">
+                      <span>Click any preset above to instantly generate a tailored message.</span>
+                      <span>{formData.message.length} chars</span>
+                    </div>
                   </div>
 
                   {/* Submit Button */}

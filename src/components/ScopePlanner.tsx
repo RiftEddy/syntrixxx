@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Layers, Check, ArrowRight, Sparkles } from 'lucide-react';
+import { Layers, Check, ArrowRight, Sparkles, Send, Mail, CheckCircle } from 'lucide-react';
+import { AGENCY_EMAIL } from '../data';
 
 interface ScopePlannerProps {
   onApplyScopeToContact: (scopeSummary: {
@@ -16,6 +17,15 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
     'Custom Motion & Micro-Interactions',
     'Sub-Second Performance Guarantee'
   ]);
+
+  // Integrated Direct Scope Form State
+  const [formName, setFormName] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formCompany, setFormCompany] = useState('');
+  const [formBudget, setFormBudget] = useState('25');
+  const [formNotes, setFormNotes] = useState('');
+  const [formBudgetError, setFormBudgetError] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const projectTypes = [
     {
@@ -63,15 +73,71 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
     }
   };
 
-  const handleTransferToBrief = () => {
-    const currentProjectName = projectTypes.find((p) => p.id === projectType)?.name || 'Flagship Web Presence';
-    const currentTimelineName = timelineOptions.find((t) => t.id === timeline)?.name || 'Standard Sprint (5–7 Weeks)';
+  const currentProject = projectTypes.find((p) => p.id === projectType) || projectTypes[0];
+  const currentTimeline = timelineOptions.find((t) => t.id === timeline) || timelineOptions[0];
 
+  const handleTransferToBrief = () => {
     onApplyScopeToContact({
-      serviceType: currentProjectName,
-      timeline: currentTimelineName,
+      serviceType: currentProject.name,
+      timeline: currentTimeline.name,
       selectedFeatures: selectedAddons
     });
+  };
+
+  const generateScopeMailtoUrl = () => {
+    const numericBudget = parseFloat(formBudget);
+    const formattedBudget = !isNaN(numericBudget) ? `$${numericBudget.toLocaleString()} USD` : `$${formBudget} USD`;
+    const subject = `[Syntrix Scope Brief] ${currentProject.name} - ${formCompany || formName || 'Client'}`;
+    const body = `Hello Niale & Syntrix Studio,
+
+I have configured our project scope using the Syntrix Interactive Scope Planner and would like to initiate discovery.
+
+CONFIGURED SCOPE SPECIFICATIONS:
+------------------------------------------
+• Architecture: ${currentProject.name}
+• Delivery Cadence: ${currentTimeline.name}
+• Active Modules (${selectedAddons.length}):
+${selectedAddons.length > 0 ? selectedAddons.map((a) => `  - ${a}`).join('\n') : '  - Standard Core Architecture'}
+
+CLIENT DETAILS & ALLOCATION:
+------------------------------------------
+• Name: ${formName}
+• Email: ${formEmail}
+• Company / Brand: ${formCompany || 'N/A'}
+• Allocation Amount: ${formattedBudget}
+
+PROJECT VISION & NOTES:
+------------------------------------------
+${formNotes || 'Ready to initiate architectural discovery and schedule kickoff.'}
+
+------------------------------------------
+Transmitted via Syntrix Scope Planner directly to ${AGENCY_EMAIL}`;
+
+    return `mailto:${AGENCY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const handleDirectScopeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formName.trim() || !formEmail.trim()) return;
+
+    const parsedBudget = parseFloat(formBudget);
+    if (isNaN(parsedBudget) || parsedBudget < 25) {
+      setFormBudgetError('Allocation amount must be at least $25 USD.');
+      return;
+    }
+
+    setFormBudgetError('');
+    setIsSubmitted(true);
+
+    // Keep contact component synchronized
+    onApplyScopeToContact({
+      serviceType: currentProject.name,
+      timeline: currentTimeline.name,
+      selectedFeatures: selectedAddons
+    });
+
+    // Launch mail client
+    window.location.href = generateScopeMailtoUrl();
   };
 
   return (
@@ -88,14 +154,14 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
             <span className="text-[#FFD700]">TAILORED & TRANSPARENT.</span>
           </h2>
           <p className="text-white/60 text-base leading-relaxed">
-            Configure your project parameters to define architecture, delivery cadence, and core feature modules. Transfer your tailored scope directly into the project brief.
+            Configure your project parameters to define architecture, delivery cadence, and core feature modules. Submit your brief directly from this planner or transfer your configured scope to the Initiate section.
           </p>
         </div>
 
         {/* Planner Workspace Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Scope Selectors */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-7 space-y-8">
             {/* Step 1: Project Type */}
             <div className="p-6 bg-white/5 border border-white/10">
               <label className="text-xs uppercase tracking-widest font-bold text-white/50 block mb-4">
@@ -138,24 +204,37 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
                     onClick={() => setTimeline(opt.id as any)}
                     className={`p-4 text-left border transition-all cursor-pointer ${
                       timeline === opt.id
-                        ? 'bg-white/10 border-[#FFD700] text-white'
-                        : 'bg-black border-white/10 text-white/50 hover:border-white/30 hover:text-white'
+                        ? 'bg-white/10 border-[#FFD700]'
+                        : 'bg-black border-white/10 hover:border-white/30'
                     }`}
                   >
-                    <div className="text-xs font-bold uppercase tracking-tight text-white mb-1">{opt.name}</div>
-                    <div className="text-[10px] text-white/40">
-                      {opt.description}
+                    <div className="flex items-center justify-between mb-1">
+                      <span className={`text-xs font-bold uppercase tracking-tight ${timeline === opt.id ? 'text-[#FFD700]' : 'text-white'}`}>
+                        {opt.name.split(' (')[0]}
+                      </span>
+                      {timeline === opt.id && <Check className="w-3.5 h-3.5 text-[#FFD700]" />}
                     </div>
+                    <span className="text-[10px] text-[#FFD700] block mb-1 font-mono">
+                      {opt.name.match(/\((.*?)\)/)?.[1]}
+                    </span>
+                    <p className="text-[11px] text-white/50 leading-relaxed">
+                      {opt.description}
+                    </p>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Step 3: High-Impact Modules & Addons */}
+            {/* Step 3: Key Feature Modules */}
             <div className="p-6 bg-white/5 border border-white/10">
-              <label className="text-xs uppercase tracking-widest font-bold text-white/50 block mb-4">
-                3. High-Impact Enhancements & Modules
-              </label>
+              <div className="flex items-center justify-between mb-4">
+                <label className="text-xs uppercase tracking-widest font-bold text-white/50">
+                  3. Select Active Feature Modules
+                </label>
+                <span className="text-[10px] font-mono text-[#FFD700]">
+                  {selectedAddons.length} Modules Active
+                </span>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {availableAddons.map((addon) => {
                   const isChecked = selectedAddons.includes(addon.name);
@@ -163,15 +242,15 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
                     <div
                       key={addon.name}
                       onClick={() => toggleAddon(addon.name)}
-                      className={`p-3.5 border flex items-center justify-between cursor-pointer transition-all ${
+                      className={`p-3.5 border flex items-center justify-between transition-all cursor-pointer select-none ${
                         isChecked
                           ? 'bg-white/10 border-[#FFD700]'
-                          : 'bg-black border-white/10 hover:border-white/30'
+                          : 'bg-black border-white/10 hover:border-white/20'
                       }`}
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center space-x-3">
                         <div
-                          className={`w-4 h-4 flex items-center justify-center border transition-colors ${
+                          className={`w-4 h-4 rounded-none border flex items-center justify-center shrink-0 ${
                             isChecked
                               ? 'bg-[#FFD700] border-[#FFD700] text-black'
                               : 'border-white/30 bg-black'
@@ -191,72 +270,208 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
             </div>
           </div>
 
-          {/* Right Column: Scope Summary Card */}
-          <div className="lg:col-span-4 sticky top-28 p-6 sm:p-8 bg-white/5 border border-white/20 shadow-2xl">
-            <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
-              <span className="text-xs uppercase tracking-widest font-bold text-white/50">
-                Scope Summary
-              </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 bg-[#FFD700] text-black font-bold uppercase tracking-wider">
-                SPECIFICATION
-              </span>
-            </div>
-
-            <div className="space-y-4 mb-6">
-              <div>
-                <span className="text-[10px] uppercase tracking-wider text-white/40 block">Selected Architecture</span>
-                <span className="text-sm font-bold text-white uppercase tracking-tight">
-                  {projectTypes.find((p) => p.id === projectType)?.name}
+          {/* Right Column: Scope Summary & Direct Scope Brief Form */}
+          <div className="lg:col-span-5 sticky top-28 space-y-6">
+            <div className="p-6 sm:p-7 bg-white/5 border border-white/20 shadow-2xl relative">
+              {/* Scope Spec Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-5">
+                <div className="flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-[#FFD700]" />
+                  <span className="text-xs uppercase tracking-widest font-bold text-white">
+                    Plan The Scope Form
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 bg-[#FFD700] text-black font-bold uppercase tracking-wider">
+                  SPECIFICATION
                 </span>
               </div>
 
-              <div>
-                <span className="text-[10px] uppercase tracking-wider text-white/40 block">Delivery Cadence</span>
-                <span className="text-sm font-bold text-white uppercase tracking-tight">
-                  {timelineOptions.find((t) => t.id === timeline)?.name}
-                </span>
-              </div>
-
-              <div>
-                <span className="text-[10px] uppercase tracking-wider text-white/40 block mb-1">
-                  Active Modules ({selectedAddons.length})
-                </span>
-                <div className="space-y-1">
-                  {selectedAddons.map((item, idx) => (
-                    <div key={idx} className="text-xs text-white/70 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 bg-[#FFD700]" />
-                      <span className="truncate">{item}</span>
-                    </div>
-                  ))}
+              {/* Dynamic Summary Badges */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <div className="p-2.5 bg-black border border-white/10">
+                  <span className="text-[9px] uppercase tracking-wider text-white/40 block">Architecture</span>
+                  <span className="text-xs font-bold text-white uppercase truncate block">
+                    {currentProject.name}
+                  </span>
+                </div>
+                <div className="p-2.5 bg-black border border-white/10">
+                  <span className="text-[9px] uppercase tracking-wider text-white/40 block">Cadence</span>
+                  <span className="text-xs font-bold text-white uppercase truncate block">
+                    {currentTimeline.name.split(' (')[0]}
+                  </span>
                 </div>
               </div>
-            </div>
 
-            {/* Custom Allocation Notice */}
-            <div className="p-4 bg-black border border-white/10 mb-6">
-              <span className="text-[10px] uppercase tracking-widest text-white/40 block mb-1">
-                Project Capital Allocation
-              </span>
-              <div className="text-lg sm:text-xl font-black italic tracking-tight text-[#FFD700]">
-                Client-Specified
+              {/* Active Modules Preview */}
+              <div className="p-3 bg-black/60 border border-white/10 mb-5">
+                <div className="flex justify-between items-center mb-1.5 text-[10px] uppercase font-mono text-white/50">
+                  <span>Selected Modules</span>
+                  <span className="text-[#FFD700] font-bold">{selectedAddons.length} Included</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedAddons.map((item, idx) => (
+                    <span
+                      key={idx}
+                      className="text-[10px] bg-white/10 text-white/80 px-2 py-0.5 border border-white/10"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                  {selectedAddons.length === 0 && (
+                    <span className="text-[10px] text-white/40 italic">
+                      No optional modules selected (Core platform only).
+                    </span>
+                  )}
+                </div>
               </div>
-              <span className="text-[10px] text-white/40 block mt-1 leading-relaxed">
-                We do not use automatic price estimators. Define your custom allocation amount (min. $25 USD) directly in the brief form.
-              </span>
+
+              {/* DIRECT BRIEF FORM IN PLAN THE SCOPE SECTION */}
+              {isSubmitted ? (
+                <div className="text-center py-6 space-y-4 bg-black p-5 border border-[#FFD700]">
+                  <div className="w-12 h-12 bg-[#FFD700]/10 border border-[#FFD700] flex items-center justify-center mx-auto">
+                    <CheckCircle className="w-6 h-6 text-[#FFD700]" />
+                  </div>
+                  <h4 className="text-lg font-black italic tracking-tight text-white uppercase">
+                    Scope Brief Prepared for Niale
+                  </h4>
+                  <p className="text-white/70 text-xs leading-relaxed">
+                    Thank you <strong className="text-white">{formName}</strong>. Your tailored scope brief has been formatted for <strong className="text-[#FFD700]">{AGENCY_EMAIL}</strong>.
+                  </p>
+                  <div className="pt-2 space-y-2">
+                    <a
+                      href={generateScopeMailtoUrl()}
+                      className="w-full py-3 bg-[#FFD700] hover:bg-white text-black font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+                    >
+                      <Mail className="w-3.5 h-3.5" />
+                      <span>Dispatch via Email App</span>
+                    </a>
+                    <button
+                      onClick={() => setIsSubmitted(false)}
+                      className="w-full py-2.5 bg-white/5 hover:bg-white/10 text-white text-[11px] uppercase tracking-wider border border-white/10 transition-colors cursor-pointer"
+                    >
+                      Edit Scope / Submit Another
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleDirectScopeSubmit} className="space-y-4">
+                  <div className="text-[11px] text-white/60 uppercase tracking-wider font-mono flex items-center gap-1.5 border-b border-white/10 pb-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#FFD700]" />
+                    <span>Submit Direct Scope Brief:</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] uppercase tracking-wider text-white/60 mb-1">
+                        Your Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formName}
+                        onChange={(e) => setFormName(e.target.value)}
+                        placeholder="Elena Vance"
+                        className="w-full px-3 py-2 bg-black border border-white/10 focus:border-[#FFD700] text-xs text-white placeholder-white/30 outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] uppercase tracking-wider text-white/60 mb-1">
+                        Work Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formEmail}
+                        onChange={(e) => setFormEmail(e.target.value)}
+                        placeholder="elena@company.com"
+                        className="w-full px-3 py-2 bg-black border border-white/10 focus:border-[#FFD700] text-xs text-white placeholder-white/30 outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] uppercase tracking-wider text-white/60 mb-1">
+                        Company or Brand
+                      </label>
+                      <input
+                        type="text"
+                        value={formCompany}
+                        onChange={(e) => setFormCompany(e.target.value)}
+                        placeholder="Acme Ventures"
+                        className="w-full px-3 py-2 bg-black border border-white/10 focus:border-[#FFD700] text-xs text-white placeholder-white/30 outline-none"
+                      />
+                    </div>
+                    <div>
+                      <div className="flex justify-between items-center mb-1">
+                        <label className="block text-[10px] uppercase tracking-wider text-white/60">
+                          Allocation ($ USD) *
+                        </label>
+                        <span className="text-[9px] text-[#FFD700] font-mono">Min $25</span>
+                      </div>
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-white/40 font-mono text-xs">
+                          $
+                        </span>
+                        <input
+                          type="number"
+                          min={25}
+                          required
+                          value={formBudget}
+                          onChange={(e) => {
+                            setFormBudget(e.target.value);
+                            if (formBudgetError && parseFloat(e.target.value) >= 25) {
+                              setFormBudgetError('');
+                            }
+                          }}
+                          placeholder="25"
+                          className="w-full pl-6 pr-3 py-2 bg-black border border-white/10 focus:border-[#FFD700] text-xs text-white font-mono placeholder-white/30 outline-none"
+                        />
+                      </div>
+                      {formBudgetError && (
+                        <p className="text-[10px] text-red-400 mt-1 font-mono">{formBudgetError}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-wider text-white/60 mb-1">
+                      Project Notes / Specifics
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={formNotes}
+                      onChange={(e) => setFormNotes(e.target.value)}
+                      placeholder={`Tell us about your ${currentProject.name} goals or launch vision...`}
+                      className="w-full px-3 py-2 bg-black border border-white/10 focus:border-[#FFD700] text-xs text-white placeholder-white/30 outline-none resize-none"
+                    />
+                  </div>
+
+                  {/* Primary Submit Button */}
+                  <button
+                    type="submit"
+                    className="w-full py-3.5 px-4 bg-[#FFD700] hover:bg-white text-black font-bold text-xs uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer"
+                  >
+                    <span>Transmit Scope Brief to Niale</span>
+                    <Send className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                  </button>
+
+                  {/* Secondary Transfer Button */}
+                  <button
+                    type="button"
+                    onClick={handleTransferToBrief}
+                    className="w-full py-2.5 px-3 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[11px] font-bold uppercase tracking-wider border border-white/10 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>Or Transfer & Open in Initiate Section ↓</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </form>
+              )}
+
+              <p className="text-[10px] text-white/40 text-center mt-3 uppercase tracking-wider">
+                Direct dispatch to {AGENCY_EMAIL} • NDA upon request
+              </p>
             </div>
-
-            {/* Action button to populate contact form */}
-            <button
-              onClick={handleTransferToBrief}
-              className="w-full py-4 px-4 bg-[#FFD700] hover:bg-white text-black font-bold text-xs uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer"
-            >
-              <span>Transfer Scope to Brief</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </button>
-
-            <p className="text-[11px] text-white/40 text-center mt-3 uppercase tracking-wider">
-              No commitment required. Pre-fills your project specifications below.
-            </p>
           </div>
         </div>
       </div>

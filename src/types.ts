@@ -48,6 +48,45 @@ export interface Testimonial {
   year: string;
 }
 
+export type BillingCycle = 'one-time' | 'monthly' | 'yearly';
+
+export interface PricingPackage {
+  id: string;
+  name: string;
+  subDescription?: string;
+  tagline: string;
+  badge?: string;
+  category?: 'starter' | 'growth' | 'flagship';
+  tierLevel?: number;
+  popular?: boolean;
+  priceUsd: number;
+  priceKsh: number;
+  monthlyUsd: number;
+  monthlyKsh: number;
+  yearlyUsd: number;
+  yearlyKsh: number;
+  timeline: string;
+  deliverables: string[];
+  idealFor: string;
+  highlights?: string[];
+  accentColor?: string;
+}
+
+export interface PackageCheckoutData {
+  packageId: string;
+  packageName: string;
+  billingCycle: BillingCycle;
+  priceUsd: number;
+  priceKsh: number;
+  currency: 'USD' | 'KSH' | 'BOTH';
+  fullName: string;
+  email: string;
+  phone: string;
+  company: string;
+  paymentMethod: 'mpesa' | 'card' | 'wire';
+  notes: string;
+}
+
 export interface ContactFormData {
   fullName: string;
   email: string;
@@ -57,3 +96,12 @@ export interface ContactFormData {
   timeline: string;
   message: string;
 }
+
+export interface MpesaPaymentDetails {
+  recipientName: string;
+  phoneNumber: string;
+  formattedPhone: string;
+  paybillNumber?: string;
+  accountNumber?: string;
+}
+
