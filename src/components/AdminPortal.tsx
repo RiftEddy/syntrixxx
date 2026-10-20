@@ -51,7 +51,8 @@ interface AdminPortalProps {
   onClose: () => void;
 }
 
-const MASTER_PASSCODE = 'syntrix2025'; // Master clearance passcode
+const MASTER_PASSCODES = ['adzava2025', 'syntrix2025', 'adzava']; // Master clearance passcodes
+const isPasscodeValid = (code: string) => MASTER_PASSCODES.includes(code.trim().toLowerCase());
 
 export const AdminPortal: React.FC<AdminPortalProps> = ({ isOpen, onClose }) => {
   // Authentication State
@@ -101,7 +102,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ isOpen, onClose }) => 
   // Handle Passcode Submit
   const handleAuthSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcodeInput.trim().toLowerCase() === MASTER_PASSCODE || passcodeInput.trim() === '0712' || passcodeInput.trim() === 'kaeti') {
+    if (isPasscodeValid(passcodeInput) || passcodeInput.trim() === '0712' || passcodeInput.trim() === 'kaeti') {
       setIsAuthenticated(true);
       sessionStorage.setItem('syntrix_admin_authed', 'true');
       setAuthError(false);
@@ -272,7 +273,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ isOpen, onClose }) => 
                 </span>
               </div>
               <h2 className="text-lg sm:text-xl font-black italic tracking-tight text-white flex items-center gap-2 mt-0.5">
-                <span>Syntrix Atelier Command Center</span>
+                <span>ADZAVA Atelier Command Center</span>
                 <span className="text-xs font-normal not-italic text-white/40 font-mono">
                   (Checkout Verification & Analytics)
                 </span>
@@ -386,7 +387,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ isOpen, onClose }) => 
               </button>
 
               <div className="p-2.5 bg-white/5 border border-white/10 text-[10px] font-mono text-white/40">
-                Default Master Passcode: <code className="text-[#FFD700] font-bold">syntrix2025</code>
+                Default Master Passcode: <code className="text-[#FFD700] font-bold">adzava2025</code> (or <code>syntrix2025</code>)
               </div>
             </form>
           </div>
@@ -590,9 +591,9 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ isOpen, onClose }) => 
                       // WhatsApp Outreach Pre-fill
                       const waOutreachText = encodeURIComponent(
                         `Hello ${ord.fullName},\n\n` +
-                        `This is the Syntrix Atelier Concierge regarding your order (${ord.id}) for the ${ord.packageName}.\n\n` +
+                        `This is the ADZAVA Atelier Concierge regarding your order (${ord.id}) for the ${ord.packageName}.\n\n` +
                         `${isVerified ? `We have confirmed your M-Pesa payment (${ord.mpesaCode}) for KSh ${ord.amountKsh.toLocaleString()}. Your bespoke flagship kickoff is officially approved.` : `We received your requisition and are reviewing M-Pesa code: ${ord.mpesaCode || 'Pending'}.`}\n\n` +
-                        `Creative Lead: Syntrix by Niale Kaeti`
+                        `Creative Lead: ADZAVA by Niale Kaeti`
                       );
 
                       return (
@@ -775,7 +776,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ isOpen, onClose }) => 
                               </a>
 
                               <a
-                                href={`mailto:${ord.email}?subject=${encodeURIComponent(`[Syntrix Atelier] Order ${ord.id} Confirmation - ${ord.packageName}`)}`}
+                                href={`mailto:${ord.email}?subject=${encodeURIComponent(`[ADZAVA Atelier] Order ${ord.id} Confirmation - ${ord.packageName}`)}`}
                                 className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
                                 title="Email client formal receipt"
                               >
@@ -1081,9 +1082,9 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ isOpen, onClose }) => 
 
         {/* Footer Audit Bar */}
         <div className="p-3 bg-black border-t border-white/10 text-[10px] font-mono text-white/40 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Syntrix Digital Engineering Atelier // Confidential Internal Ledger</span>
+          <span>ADZAVA Digital Engineering Atelier // Confidential Internal Ledger</span>
           <span className="text-white/60">
-            Passcode: <code className="text-[#FFD700]">syntrix2025</code> • Shortcut: <kbd className="px-1.5 py-0.5 bg-white/10 text-white rounded">Ctrl+Shift+A</kbd>
+            Passcode: <code className="text-[#FFD700]">adzava2025</code> • Shortcut: <kbd className="px-1.5 py-0.5 bg-white/10 text-white rounded">Ctrl+Shift+A</kbd>
           </span>
         </div>
       </div>

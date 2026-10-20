@@ -87,10 +87,10 @@ export const ScopePlanner: React.FC<ScopePlannerProps> = ({ onApplyScopeToContac
   const generateScopeMailtoUrl = () => {
     const numericBudget = parseFloat(formBudget);
     const formattedBudget = !isNaN(numericBudget) ? `$${numericBudget.toLocaleString()} USD` : `$${formBudget} USD`;
-    const subject = `[Syntrix Scope Brief] ${currentProject.name} - ${formCompany || formName || 'Client'}`;
-    const body = `Hello Niale & Syntrix Studio,
+    const subject = `[ADZAVA Scope Brief] ${currentProject.name} - ${formCompany || formName || 'Client'}`;
+    const body = `Hello Niale & ADZAVA Studio,
 
-I have configured our project scope using the Syntrix Interactive Scope Planner and would like to initiate discovery.
+I have configured our project scope using the ADZAVA Interactive Scope Planner and would like to initiate discovery.
 
 CONFIGURED SCOPE SPECIFICATIONS:
 ------------------------------------------
@@ -111,7 +111,7 @@ PROJECT VISION & NOTES:
 ${formNotes || 'Ready to initiate architectural discovery and schedule kickoff.'}
 
 ------------------------------------------
-Transmitted via Syntrix Scope Planner directly to ${AGENCY_EMAIL}`;
+Transmitted via ADZAVA Scope Planner directly to ${AGENCY_EMAIL}`;
 
     return `mailto:${AGENCY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
@@ -335,7 +335,7 @@ Transmitted via Syntrix Scope Planner directly to ${AGENCY_EMAIL}`;
                     Scope Brief Prepared for Niale
                   </h4>
                   <p className="text-white/70 text-xs leading-relaxed">
-                    Thank you <strong className="text-white">{formName}</strong>. Your tailored scope brief has been formatted for <strong className="text-[#FFD700]">{AGENCY_EMAIL}</strong>.
+                    Thank you <strong className="text-white">{formName}</strong>. Your tailored scope brief has been formatted for our studio team.
                   </p>
                   <div className="pt-2 space-y-2">
                     <a
@@ -469,7 +469,7 @@ Transmitted via Syntrix Scope Planner directly to ${AGENCY_EMAIL}`;
               )}
 
               <p className="text-[10px] text-white/40 text-center mt-3 uppercase tracking-wider">
-                Direct dispatch to {AGENCY_EMAIL} • NDA upon request
+                Direct studio dispatch • NDA upon request
               </p>
             </div>
           </div>

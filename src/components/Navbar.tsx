@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Logo } from './Logo';
 import { SOCIAL_LINKS } from '../data';
+import { AccentSwitcher } from './AccentSwitcher';
 import { Instagram, Menu, X, ArrowUpRight } from 'lucide-react';
 
 interface NavbarProps {
@@ -103,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-white/60 hover:text-[#FFD700] px-2 py-1 bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#FFD700]/40 transition-all duration-200 group"
-                title={`Syntrix Instagram: ${SOCIAL_LINKS.company.handle}`}
+                title={`ADZAVA Instagram: ${SOCIAL_LINKS.company.handle}`}
               >
                 <Instagram className="w-3.5 h-3.5 text-[#FFD700] group-hover:scale-110 transition-transform" />
                 <span className="hidden xl:inline">{SOCIAL_LINKS.company.handle}</span>
@@ -123,12 +124,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               </a>
             </div>
 
-            {/* Quick Action Buttons */}
+            {/* Quick Action Buttons & Accent Switcher */}
             <div className="flex items-center gap-2">
+              <AccentSwitcher />
+
               <button
                 id="header-buy-button"
                 onClick={() => handleLinkClick('packages')}
-                className="hidden md:inline-flex items-center justify-center px-3 py-1.5 text-xs uppercase tracking-wide font-semibold text-white/70 hover:text-[#FFD700] hover:bg-white/5 transition-all duration-200 cursor-pointer"
+                className="hidden md:inline-flex items-center justify-center px-3 py-1.5 text-xs uppercase tracking-wide font-semibold text-white/70 hover:text-[var(--accent,#FFD700)] hover:bg-white/5 transition-all duration-200 cursor-pointer"
               >
                 <span>Packages</span>
               </button>
@@ -136,7 +139,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               <button
                 id="header-cta-button"
                 onClick={() => handleLinkClick('contact')}
-                className="group relative inline-flex items-center justify-center px-3.5 sm:px-4 py-2 text-xs uppercase tracking-wide font-bold text-black bg-[#FFD700] hover:bg-white transition-all duration-200 shadow-[0_0_15px_rgba(255,215,0,0.2)] cursor-pointer"
+                className="group relative inline-flex items-center justify-center px-3.5 sm:px-4 py-2 text-xs uppercase tracking-wide font-bold text-black transition-all duration-200 cursor-pointer"
+                style={{
+                  backgroundColor: 'var(--accent, #FFD700)',
+                  boxShadow: '0 0 15px var(--accent-glow, rgba(255,215,0,0.2))'
+                }}
               >
                 <span>Initiate</span>
                 <ArrowUpRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -235,17 +242,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, activeSection }) => 
               </div>
             </div>
 
-            {/* Quick Actions in Mobile Menu */}
+            {/* Theme Accent & Quick Actions in Mobile Menu */}
+            <div className="flex items-center justify-between p-3 bg-white/[0.02] border border-white/10">
+              <span className="text-xs uppercase tracking-wide font-bold text-white/60">
+                Brand Accent
+              </span>
+              <AccentSwitcher compact={true} />
+            </div>
+
             <div className="grid grid-cols-2 gap-3 pt-2">
               <button
                 onClick={() => handleLinkClick('packages')}
-                className="py-3 px-4 text-center text-xs uppercase tracking-wide font-bold text-white bg-white/5 border border-white/15 hover:border-[#FFD700] hover:text-[#FFD700] transition-colors"
+                className="py-3 px-4 text-center text-xs uppercase tracking-wide font-bold text-white bg-white/5 border border-white/15 hover:border-[var(--accent,#FFD700)] transition-colors"
               >
                 Packages
               </button>
               <button
                 onClick={() => handleLinkClick('contact')}
-                className="py-3 px-4 text-center text-xs uppercase tracking-wide font-bold text-black bg-[#FFD700] hover:bg-white transition-colors"
+                className="py-3 px-4 text-center text-xs uppercase tracking-wide font-bold text-black transition-colors"
+                style={{ backgroundColor: 'var(--accent, #FFD700)' }}
               >
                 Initiate
               </button>

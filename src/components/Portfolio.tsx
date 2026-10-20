@@ -342,7 +342,7 @@ export const Portfolio: React.FC = () => {
 
                 <div className="p-4 bg-white/5 border border-white/10">
                   <h4 className="text-xs uppercase tracking-widest font-bold text-[#FFD700] mb-2">
-                    Syntrix Engineered Solution
+                    ADZAVA Engineered Solution
                   </h4>
                   <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
                     {activeProjectModal.solution}
@@ -389,7 +389,7 @@ export const Portfolio: React.FC = () => {
             {/* Modal Bottom Actions */}
             <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
               <span className="text-xs text-white/40">
-                Crafted by <strong className="text-white">Syntrix by nialekaeti</strong>
+                Crafted by <strong className="text-white">ADZAVA by nialekaeti</strong>
               </span>
               <button
                 onClick={() => setActiveProjectModal(null)}

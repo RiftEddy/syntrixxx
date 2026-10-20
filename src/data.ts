@@ -129,7 +129,7 @@ export const PROJECTS: Project[] = [
       deliverables: ['Custom E-Commerce Frontend', '3D Movement Inspector', 'VIP Concierge Booking Engine', 'Brand Soundscapes'],
       timeline: '7 Weeks',
       testimonial: {
-        quote: 'Syntrix by nialekaeti captured the soul of Swiss horology with breathtaking precision. Our collectors were astonished.',
+        quote: 'ADZAVA by nialekaeti captured the soul of Swiss horology with breathtaking precision. Our collectors were astonished.',
         author: 'Alexandre Meyer',
         role: 'Creative Director, Aura Geneva'
       }
@@ -158,7 +158,7 @@ export const PROJECTS: Project[] = [
       deliverables: ['Documentation Architecture', 'Interactive CLI Simulator', 'Pricing & Cluster Matrix', 'Performance Dashboard'],
       timeline: '5 Weeks',
       testimonial: {
-        quote: 'Niale and the Syntrix team took our technical product and turned it into the most talked-about developer site in the AI space.',
+        quote: 'Niale and the ADZAVA team took our technical product and turned it into the most talked-about developer site in the AI space.',
         author: 'Dr. Elena Rostova',
         role: 'Co-Founder & CTO, Vortex AI'
       }
@@ -187,7 +187,7 @@ export const PROJECTS: Project[] = [
       deliverables: ['Investor Portal Architecture', 'Real-Time Yield Visualizer', 'Encrypted Document Vault UI', 'Mobile Executive View'],
       timeline: '6 Weeks',
       testimonial: {
-        quote: 'The level of craftsmanship is unmatched. In institutional finance, trust is visual, and Syntrix engineered pure confidence.',
+        quote: 'The level of craftsmanship is unmatched. In institutional finance, trust is visual, and ADZAVA engineered pure confidence.',
         author: 'Marcus Vance',
         role: 'Managing Partner, Aetheria Capital'
       }
@@ -216,7 +216,7 @@ export const PROJECTS: Project[] = [
       deliverables: ['Custom Editorial Portfolio', 'Project Blueprint Viewer', 'Bespoke Typography Licensing', 'Press & Monograph Archive'],
       timeline: '4 Weeks',
       testimonial: {
-        quote: 'Syntrix understands space and negative void like architects do. Our work has never looked more monumental.',
+        quote: 'ADZAVA understands space and negative void like architects do. Our work has never looked more monumental.',
         author: 'Kenji Takahashi',
         role: 'Principal Architect, Monolith'
       }
@@ -245,7 +245,7 @@ export const PROJECTS: Project[] = [
       deliverables: ['Interactive 3D Exterior Configurator', 'Custom Build Sheet Generator', 'Deposit Escrow Gateway', 'Press Room'],
       timeline: '8 Weeks',
       testimonial: {
-        quote: 'An astonishing technical and creative achievement. Syntrix brought the thrill of our hypercar to the digital screen.',
+        quote: 'An astonishing technical and creative achievement. ADZAVA brought the thrill of our hypercar to the digital screen.',
         author: 'Julian Thorne',
         role: 'Head of Brand, Hyperion'
       }
@@ -285,7 +285,7 @@ export const PROJECTS: Project[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
-    quote: 'Syntrix doesn’t just design websites; they construct digital powerhouses. The split-second precision, the bold black-and-gold visual weight, and the radical performance skyrocketed our enterprise pipeline.',
+    quote: 'ADZAVA doesn’t just design websites; they construct digital powerhouses. The split-second precision, the bold visual weight, and the radical performance skyrocketed our enterprise pipeline.',
     author: 'Seraphina Sterling',
     role: 'Chief Marketing Officer',
     company: 'Sterling & Co. Private Equity',
@@ -303,7 +303,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: '3',
-    quote: 'Our previous agency spent 6 months producing generic templates. Syntrix delivered a bespoke, breathtaking flagship platform in 7 weeks. Our conversion rate doubled overnight.',
+    quote: 'Our previous agency spent 6 months producing generic templates. ADZAVA delivered a bespoke, breathtaking flagship platform in 7 weeks. Our conversion rate doubled overnight.',
     author: 'Claire Montclaire',
     role: 'VP of Digital Experience',
     company: 'Aura Luxury Group',
@@ -321,7 +321,7 @@ export const AGENCY_STATS = [
 export const AGENCY_EMAIL = 'thef1nanceguy@hotmail.com';
 
 export const MPESA_PAYMENT_INFO = {
-  recipientName: 'Niale Kaeti (Syntrix Digital)',
+  recipientName: 'Niale Kaeti (ADZAVA Digital)',
   phone: '0712345678',
   formattedPhone: '+254 712 345 678',
   ussdCode: '*334*1#',
@@ -637,9 +637,9 @@ export const SOCIAL_LINKS = {
     name: 'Niale Kaeti'
   },
   company: {
-    handle: '@syntrixinc',
-    url: 'https://instagram.com/syntrixinc',
-    label: 'Syntrix Digital Atelier',
-    name: 'Syntrix'
+    handle: '@adzavainc',
+    url: 'https://instagram.com/adzavainc',
+    label: 'ADZAVA Digital Atelier',
+    name: 'ADZAVA'
   }
 };

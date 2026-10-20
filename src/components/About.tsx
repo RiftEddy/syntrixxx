@@ -41,7 +41,7 @@ export const About: React.FC = () => {
             <span className="text-[#FFD700]">ARCHITECTS OF TOMORROW.</span>
           </h2>
           <p className="text-white/60 text-base sm:text-lg leading-relaxed">
-            Syntrix was founded on an unapologetic premise: the internet deserves visual masterpieces that function with the reliability of Swiss chronographs.
+            ADZAVA was founded on an unapologetic premise: the internet deserves visual masterpieces that function with the reliability of Swiss chronographs.
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export const About: React.FC = () => {
 
               <div className="space-y-4 text-white/70 text-sm sm:text-base leading-relaxed">
                 <p>
-                  Led by Creative Technologist <strong>Niale Kaeti</strong>, Syntrix operates as an intimate digital atelier. Instead of taking on fifty overlapping client engagements, we partner with a strictly limited cohort of visionary founders each quarter.
+                  Led by Creative Technologist <strong>Niale Kaeti</strong>, ADZAVA operates as an intimate digital atelier. Instead of taking on fifty overlapping client engagements, we partner with a strictly limited cohort of visionary founders each quarter.
                 </p>
                 <p>
                   From high-end luxury e-commerce to cutting-edge AI computing infrastructure, our work marries stark, monolithic contrast (deep blacks, electric gold, and surgical accents) with ultra-fluid web performance.
@@ -76,7 +76,7 @@ export const About: React.FC = () => {
                       FOUNDER & PRINCIPAL
                     </span>
                   </div>
-                  <div className="text-xs text-white/40 mt-1 uppercase tracking-wider">Syntrix by nialekaeti</div>
+                  <div className="text-xs text-white/40 mt-1 uppercase tracking-wider">ADZAVA by nialekaeti</div>
                 </div>
 
                 <div className="flex items-center gap-3">

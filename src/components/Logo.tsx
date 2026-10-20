@@ -56,31 +56,40 @@ export const Logo: React.FC<LogoProps> = ({
       id="brand-logo"
       onClick={onClick}
       className={`inline-flex items-baseline gap-2.5 sm:gap-3 cursor-pointer select-none group transition-all duration-300 ${className}`}
-      title="Syntrix by nialekaeti - High-End Web Design Agency"
+      title="ADZAVA by nialekaeti - High-End Web Design Agency"
     >
       {showIcon && (
         <div
           className={`relative self-center flex items-center justify-center bg-black border border-white/20 group-hover:border-[#FFD700] transition-all duration-300 ${sizeClasses.iconSize}`}
+          style={{ borderColor: 'var(--accent, rgba(255,255,255,0.2))' }}
         >
-          {/* Stylized Minimal S with yellow & red accent */}
+          {/* Stylized Architectural A Monogram for ADZAVA */}
           <svg viewBox="0 0 40 40" className="w-3/5 h-3/5" fill="none">
             <path
-              d="M28 13C26.5 10.5 23.5 9 19.5 9C14.5 9 11 12.5 11 16.5C11 21.5 16 23 21 24.5C25.5 26 27.5 27.5 27.5 30.5C27.5 34 24 36.5 19.5 36.5C14 36.5 11 33 9.5 29"
-              stroke="#FFD700"
-              strokeWidth="4"
+              d="M20 7L9 33H15L17.5 26.5H22.5L25 33H31L20 7Z"
+              stroke="var(--accent, #FFD700)"
+              strokeWidth="2.5"
+              strokeLinejoin="round"
+              fill="none"
+            />
+            <path
+              d="M16 22H24"
+              stroke="var(--accent, #FFD700)"
+              strokeWidth="2.5"
               strokeLinecap="round"
             />
-            <circle cx="29" cy="31" r="2.5" fill="#FF0000" />
+            <circle cx="20" cy="14" r="2.2" fill="#FF0000" />
           </svg>
         </div>
       )}
 
       <div className={`flex items-baseline space-x-2 sm:space-x-3 leading-none ${sizeClasses.wrap}`}>
-        {/* Brand: syntrix in prominent bright gold/yellow uppercase italic */}
+        {/* Brand: ADZAVA in prominent bright uppercase italic */}
         <span
           className={`text-[#FFD700] ${sizeClasses.brand}`}
+          style={{ color: 'var(--accent, #FFD700)' }}
         >
-          Syntrix
+          ADZAVA
         </span>
 
         {/* Separator "by" */}

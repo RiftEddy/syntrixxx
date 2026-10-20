@@ -22,7 +22,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
             <Logo size="lg" showIcon={true} onClick={scrollToTop} />
 
             <p className="text-white/60 text-sm leading-relaxed max-w-md">
-              Syntrix by nialekaeti is a high-end web design and digital engineering agency. We craft category-defining digital flagships for discerning founders, luxury institutions, and forward-thinking enterprises.
+              ADZAVA by nialekaeti is a high-end web design and digital engineering agency. We craft category-defining digital flagships for discerning founders, luxury institutions, and forward-thinking enterprises.
             </p>
 
             {/* Prominent Instagram Social Links in Footer as requested */}
@@ -53,21 +53,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
                   </div>
                 </a>
 
-                {/* Company: @syntrixinc (label as "Syntrix") */}
+                {/* Company: @adzavainc (label as "ADZAVA") */}
                 <a
                   id="footer-social-company"
                   href={SOCIAL_LINKS.company.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FFD700] transition-all group"
-                  title="Syntrix Agency on Instagram"
+                  title="ADZAVA Agency on Instagram"
                 >
                   <div className="p-1 bg-black text-[#FFD700]">
                     <Instagram className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="text-[10px] uppercase tracking-wider text-white/50 font-bold">
-                      Syntrix
+                      ADZAVA
                     </div>
                     <div className="text-xs font-bold text-white group-hover:text-[#FFD700] transition-colors">
                       {SOCIAL_LINKS.company.handle}
@@ -193,7 +193,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
               className="text-white hover:text-[#FFD700] transition-colors cursor-pointer"
               title="Atelier Internal Portal (Double Click or Ctrl+Shift+A)"
             >
-              syntrix by nialekaeti
+              adzava by nialekaeti
             </strong>
             <span>All Rights Reserved.</span>
           </div>

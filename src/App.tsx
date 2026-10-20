@@ -10,6 +10,7 @@ import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { AdminPortal } from './components/AdminPortal';
 import { trackVisit, trackSectionView } from './utils/adminStore';
+import { getStoredAccentColor, applyAccentColor } from './utils/accentTheme';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -21,9 +22,10 @@ export default function App() {
     selectedFeatures: string[];
   } | null>(null);
 
-  // Initialize visit tracking and secret hotkeys on mount
+  // Initialize visit tracking, theme, and secret hotkeys on mount
   useEffect(() => {
     trackVisit();
+    applyAccentColor(getStoredAccentColor());
 
     // Check for #admin in URL hash or ?admin in query
     if (window.location.hash === '#admin' || window.location.search.includes('admin=')) {

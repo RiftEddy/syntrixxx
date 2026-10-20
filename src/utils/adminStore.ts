@@ -1,4 +1,4 @@
-// Syntrix Digital Atelier - Admin Storage & Real-Time Analytics Engine
+// ADZAVA Digital Atelier - Admin Storage & Real-Time Analytics Engine
 // 100% Accurate, authentic real-data tracking (Zero simulated or mock data)
 
 export interface CheckoutOrder {

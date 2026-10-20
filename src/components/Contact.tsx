@@ -25,7 +25,7 @@ interface ContactProps {
   } | null;
 }
 
-const DEFAULT_INITIATE_MESSAGE = `Hi Niale, I would like to initiate discovery for a new digital project with Syntrix. We want to craft an uncompromising, high-velocity digital presence and explore architecture and launch timeline options. Looking forward to connecting.`;
+const DEFAULT_INITIATE_MESSAGE = `Hi Niale, I would like to initiate discovery for a new digital project with ADZAVA. We want to craft an uncompromising, high-velocity digital presence and explore architecture and launch timeline options. Looking forward to connecting.`;
 
 export const Contact: React.FC<ContactProps> = ({ initialService = '', scopeSummary = null }) => {
   const [formData, setFormData] = useState<ContactFormData>({
@@ -50,7 +50,7 @@ export const Contact: React.FC<ContactProps> = ({ initialService = '', scopeSumm
       ? scope.selectedFeatures.map((f) => `  - ${f}`).join('\n')
       : '  - Standard Core Architecture';
 
-    return `Hi Niale, I've configured our project scope using the Syntrix Scope Planner:
+    return `Hi Niale, I've configured our project scope using the ADZAVA Scope Planner:
 
 • Architecture Archetype: ${scope.serviceType}
 • Delivery Cadence: ${scope.timeline}
@@ -121,8 +121,8 @@ We are looking to initiate discovery and discuss next steps for this project.`;
   const generateMailtoUrl = () => {
     const numericBudget = parseFloat(formData.budget);
     const formattedBudget = !isNaN(numericBudget) ? `$${numericBudget.toLocaleString()} USD` : `$${formData.budget} USD`;
-    const subject = `[Syntrix Discovery Brief] ${formData.service} - ${formData.company || formData.fullName}`;
-    const body = `Hello Niale & Syntrix Studio,
+    const subject = `[ADZAVA Discovery Brief] ${formData.service} - ${formData.company || formData.fullName}`;
+    const body = `Hello Niale & ADZAVA Studio,
 
 I would like to initiate discovery for a new digital project.
 
@@ -140,7 +140,7 @@ PROJECT VISION & OBJECTIVES:
 ${formData.message || 'No additional notes provided.'}
 
 ------------------------------------------
-Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
+Transmitted via ADZAVA Discovery directly to ${AGENCY_EMAIL}`;
 
     return `mailto:${AGENCY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
@@ -271,10 +271,10 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
                     <CheckCircle className="w-8 h-8 text-[#FFD700]" />
                   </div>
                   <h3 className="text-2xl sm:text-3xl font-black italic tracking-tight text-white uppercase">
-                    Brief Directed to {AGENCY_EMAIL}
+                    Brief Transmitted Successfully
                   </h3>
                   <p className="text-white/70 text-sm max-w-md mx-auto leading-relaxed">
-                    Thank you, <strong className="text-white">{formData.fullName}</strong>. Your project brief has been formatted and addressed directly to <strong className="text-[#FFD700]">{AGENCY_EMAIL}</strong>.
+                    Thank you, <strong className="text-white">{formData.fullName}</strong>. Your project brief has been formatted and transmitted directly to our studio atelier.
                   </p>
                   <p className="text-white/50 text-xs max-w-sm mx-auto">
                     If your email application did not launch automatically, click the button below to dispatch it directly:
@@ -570,12 +570,12 @@ Transmitted via Syntrix Discovery directly to ${AGENCY_EMAIL}`;
                     type="submit"
                     className="w-full py-4 bg-[#FFD700] hover:bg-white text-black font-bold text-xs uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer"
                   >
-                    <span>Transmit Project Brief to {AGENCY_EMAIL}</span>
+                    <span>Transmit Project Brief</span>
                     <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </button>
 
                   <p className="text-[11px] text-white/40 text-center uppercase tracking-wider">
-                    Transmits directly to {AGENCY_EMAIL}. All conversations protected by standard studio confidentiality (NDA upon request).
+                    Transmits directly to our studio atelier. All conversations protected by standard studio confidentiality (NDA upon request).
                   </p>
                 </form>
               )}

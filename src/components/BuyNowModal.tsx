@@ -977,7 +977,7 @@ Creative Lead: ${SOCIAL_LINKS.founder.name} (${SOCIAL_LINKS.founder.handle})
 
             <div className="flex items-center justify-center gap-2 text-[11px] text-white/40 font-mono text-center">
               <ShieldCheck className="w-3.5 h-3.5 text-[#FFD700]" />
-              <span>Direct requisition issued to {AGENCY_EMAIL} • Non-disclosure protection included</span>
+              <span>Direct requisition issued to studio atelier • Non-disclosure protection included</span>
             </div>
           </form>
         ) : (

@@ -122,7 +122,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork, onVie
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 hover:border-[#FFD700] text-xs font-semibold text-white/80 hover:text-[#FFD700] transition-all"
-                    title="Syntrix Instagram"
+                    title="ADZAVA Instagram"
                   >
                     <Instagram className="w-4 h-4 text-[#FFD700]" />
                     <span className="font-bold">{SOCIAL_LINKS.company.handle}</span>
@@ -150,7 +150,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartProject, onExploreWork, onVie
                 <span className="text-xs uppercase tracking-wider font-bold text-white">The Agency Story</span>
               </div>
               <p className="mt-3 text-xs sm:text-sm text-white/40 max-w-md leading-relaxed">
-                Founded by nialekaeti, Syntrix was born from the need for digital experiences that command attention without begging for it.
+                Founded by nialekaeti, ADZAVA was born from the need for digital experiences that command attention without begging for it.
               </p>
             </div>
           </section>
